@@ -22,7 +22,7 @@ export function AddItemForm(props: AddItemFormPropsType) {
         if (title.trim() !== '') {
             props.addItem(title)
         } else {
-            setError('Title is required')
+            setError('Title is required!')
         }
         setTitle('')
     }
