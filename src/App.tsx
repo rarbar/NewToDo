@@ -3,6 +3,7 @@ import './App.css';
 import {Todolist} from './TodoList';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
+import {AppBar, Container, Grid, Paper} from '@material-ui/core';
 
 
 export type TaskType = {
@@ -46,7 +47,7 @@ function App() {
 
     function removeTask(id: string, todoListID: string) {
         // достаем нужный массив по todoListID
-        let todolistTask= tasks[todoListID]
+        let todolistTask = tasks[todoListID]
         // перезапишим в этом обьекте массив для нужного TD отфильтрованными массивами
         tasks[todoListID] = todolistTask.filter(t => t.id !== id)
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
@@ -56,7 +57,7 @@ function App() {
     function removeTodoList(todoListID: string) {
         // засуним в стейт список TD, id которых не равны тому который хотим вакинуть
         setTodoList(todoList.filter(tl => tl.id !== todoListID))
-            //удалим и таски из второго стейта
+        //удалим и таски из второго стейта
         delete tasks[todoListID]
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
@@ -66,36 +67,36 @@ function App() {
         // создаем новую таску
         let newTask = {id: v1(), title, isDone: false}
         // достаем нужный массив по todoListID
-        let todolistTask= tasks[todoListID]
+        let todolistTask = tasks[todoListID]
         // перезапишим в этом обьекте массив для нужнрго нам TD добавив новую таску
         tasks[todoListID] = [newTask, ...todolistTask]
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
 
-    function addTodoList(title:string){
-        const newTodoListID=v1()
-        const newTodoList:TodoListType={
-            id:newTodoListID,
+    function addTodoList(title: string) {
+        const newTodoListID = v1()
+        const newTodoList: TodoListType = {
+            id: newTodoListID,
             title,
-            filter:'all'
+            filter: 'all'
         }
-        setTodoList([...todoList,newTodoList])
-        setTasks({...tasks,[newTodoListID]:[]})
+        setTodoList([...todoList, newTodoList])
+        setTasks({...tasks, [newTodoListID]: []})
     }
 
     function changeTaskStatus(taskID: string, isDone: boolean, todoListID: string) {
         // достаем нужный массив по todoListID
-        let todolistTask= tasks[todoListID]
+        let todolistTask = tasks[todoListID]
         // перезапишим в этом обьекте массив для нужного TD отмапив его меняя isDone
         tasks[todoListID] = todolistTask.map(t => t.id === taskID ? {...t, isDone} : t)
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
 
-    function changeTaskTitle(taskID: string, title:string, todoListID: string) {
+    function changeTaskTitle(taskID: string, title: string, todoListID: string) {
         // достаем нужный массив по todoListID
-        let todolistTask= tasks[todoListID]
+        let todolistTask = tasks[todoListID]
         // перезапишим в этом обьекте массив для нужного TD отмапив его меняя title
         tasks[todoListID] = todolistTask.map(t => t.id === taskID ? {...t, title} : t)
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
@@ -106,8 +107,8 @@ function App() {
         setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, filter} : tl))
     }
 
-    function changeTodoListTitle(title:string, todolistID: string) {
-        setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl,title} : tl))
+    function changeTodoListTitle(title: string, todolistID: string) {
+        setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, title} : tl))
     }
 
     function getFilterTasks(tl: TodoListType) {
@@ -124,26 +125,39 @@ function App() {
     const todoListComponents = todoList.map(tl => {
             const taskForTodoList = getFilterTasks(tl)
             return (
-                <Todolist
-                    key={tl.id}
-                    filter={tl.filter}
-                    title={tl.title}
-                    addTask={addNewTask}
-                    todolistID={tl.id}
-                    tasks={taskForTodoList}
-                    changeFilter={changeTodoListFilter}
-                    changeStatus={changeTaskStatus}
-                    removeTask={removeTask}
-                    removeTodoList={removeTodoList}
-                    changeTaskTitle={changeTaskTitle}
-                    changeTodoListTitle={changeTodoListTitle}
-                />)
+                <Grid
+                    item
+                    key={tl.id}>
+                    <Paper elevation={5}
+                           style={{padding: '10px'}}>
+                        <Todolist
+                            filter={tl.filter}
+                            title={tl.title}
+                            addTask={addNewTask}
+                            todolistID={tl.id}
+                            tasks={taskForTodoList}
+                            changeFilter={changeTodoListFilter}
+                            changeStatus={changeTaskStatus}
+                            removeTask={removeTask}
+                            removeTodoList={removeTodoList}
+                            changeTaskTitle={changeTaskTitle}
+                            changeTodoListTitle={changeTodoListTitle}
+                        />
+                    </Paper>
+                </Grid>)
         }
     )
     return (
         <div className="App">
-            <AddItemForm addItem={addTodoList}/>
-            {todoListComponents}
+            <AppBar position={'static'}/>
+            <Container fixed>
+                <Grid container style={{padding: '20px 0px'}}>
+                    <AddItemForm addItem={addTodoList}/>
+                </Grid>
+                <Grid container spacing={5}>
+                    {todoListComponents}
+                </Grid>
+            </Container>
         </div>
     );
 }
