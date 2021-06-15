@@ -3,7 +3,8 @@ import './App.css';
 import {Todolist} from './TodoList';
 import {v1} from 'uuid';
 import {AddItemForm} from './AddItemForm';
-import {AppBar, Container, Grid, Paper} from '@material-ui/core';
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
+import {Menu} from '@material-ui/icons';
 
 
 export type TaskType = {
@@ -24,21 +25,20 @@ type TaskStateType = {
 
 function App() {
 
-    const todoListID1 = v1()
-    const todoListID2 = v1()
-
+    const todoListId1 = v1()
+    const todoListId2 = v1()
 
     const [todoList, setTodoList] = useState<TodoListType[]>([
-        {id: todoListID1, title: 'What to leurn', filter: 'all'},
-        {id: todoListID2, title: 'What to buy', filter: 'all'},])
+        {id: todoListId1, title: 'What to leurn', filter: 'all'},
+        {id: todoListId2, title: 'What to buy', filter: 'all'},])
 
     const [tasks, setTasks] = useState<TaskStateType>({
-        [todoListID1]: [
+        [todoListId1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
             {id: v1(), title: 'ReactJS', isDone: false}
         ],
-        [todoListID2]: [
+        [todoListId2]: [
             {id: v1(), title: 'Milk', isDone: true},
             {id: v1(), title: 'Cheese', isDone: false},
             {id: v1(), title: 'Beef', isDone: false}
@@ -53,16 +53,6 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
-
-    function removeTodoList(todoListID: string) {
-        // засуним в стейт список TD, id которых не равны тому который хотим вакинуть
-        setTodoList(todoList.filter(tl => tl.id !== todoListID))
-        //удалим и таски из второго стейта
-        delete tasks[todoListID]
-        // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
-        setTasks({...tasks})
-    }
-
     function addNewTask(title: string, todoListID: string) {
         // создаем новую таску
         let newTask = {id: v1(), title, isDone: false}
@@ -73,18 +63,6 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
-
-    function addTodoList(title: string) {
-        const newTodoListID = v1()
-        const newTodoList: TodoListType = {
-            id: newTodoListID,
-            title,
-            filter: 'all'
-        }
-        setTodoList([...todoList, newTodoList])
-        setTasks({...tasks, [newTodoListID]: []})
-    }
-
     function changeTaskStatus(taskID: string, isDone: boolean, todoListID: string) {
         // достаем нужный массив по todoListID
         let todolistTask = tasks[todoListID]
@@ -93,7 +71,6 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
-
     function changeTaskTitle(taskID: string, title: string, todoListID: string) {
         // достаем нужный массив по todoListID
         let todolistTask = tasks[todoListID]
@@ -106,10 +83,28 @@ function App() {
     function changeTodoListFilter(filter: FilterValueType, todolistID: string) {
         setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, filter} : tl))
     }
-
     function changeTodoListTitle(title: string, todolistID: string) {
         setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, title} : tl))
     }
+    function removeTodoList(todoListID: string) {
+        // засуним в стейт список TD, id которых не равны тому который хотим вакинуть
+        setTodoList(todoList.filter(tl => tl.id !== todoListID))
+        //удалим и таски из второго стейта
+        delete tasks[todoListID]
+        // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
+        setTasks({...tasks})
+    }
+    function addTodoList(title: string) {
+        const newTodoListID = v1()
+        const newTodoList: TodoListType = {
+            id: newTodoListID,
+            title,
+            filter: 'all'
+        }
+        setTodoList([...todoList, newTodoList])
+        setTasks({...tasks, [newTodoListID]: []})
+    }
+
 
     function getFilterTasks(tl: TodoListType) {
         switch (tl.filter) {
@@ -121,7 +116,6 @@ function App() {
                 return tasks[tl.id]
         }
     }
-
     const todoListComponents = todoList.map(tl => {
             const taskForTodoList = getFilterTasks(tl)
             return (
@@ -149,7 +143,18 @@ function App() {
     )
     return (
         <div className="App">
-            <AppBar position={'static'}/>
+            <AppBar position={'static'}>
+            <Toolbar>
+                <IconButton edge="start"  color="inherit" aria-label="menu">
+                    <Menu/>
+                </IconButton>
+                <Typography variant="h6">
+                    TodoList
+                </Typography>
+                <Button color="inherit" style={{
+                    position: 'absolute', right: '10px'}}>Login </Button>
+            </Toolbar>
+        </AppBar>
             <Container fixed>
                 <Grid container style={{padding: '20px 0px'}}>
                     <AddItemForm addItem={addTodoList}/>

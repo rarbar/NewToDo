@@ -47,32 +47,29 @@ export function Todolist(props: PropsType) {
                     changeTitle={changeTaskTitle}
                     title={t.title}/></span>
                 <IconButton
+                    style={{marginLeft:'15px'}}
+                    size={'small'}
                     color={'secondary'}
                     onClick={removeTask}>
                     <Delete/>
                 </IconButton>
             </li>)
     })
-    const onClickAll = () => {
-        props.changeFilter('all', props.todolistID)
-    }
-    const onClickActive = () => {
-        props.changeFilter('active', props.todolistID)
-    }
-    const onClickCompleted = () => {
-        props.changeFilter('completed', props.todolistID)
-    }
-    const removeTodoList = () => {
-        props.removeTodoList(props.todolistID)
-    }
+    const onClickAll = () => {props.changeFilter('all', props.todolistID)}
+    const onClickActive = () => {props.changeFilter('active', props.todolistID)}
+    const onClickCompleted = () => {props.changeFilter('completed', props.todolistID)}
+    const removeTodoList = () => {props.removeTodoList(props.todolistID)}
     const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todolistID)
 
     return <div>
         <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
-        <IconButton
 
+        <IconButton
+            style={{marginLeft:'15px'}}
+            size={'small'}
             onClick={removeTodoList}>
-            <Delete color={'secondary'}/>
+            <Delete
+                color={'secondary'}/>
         </IconButton>
         <AddItemForm addItem={addTask}/>
         <ul style={{listStyle:'none',padding:'0px'}}> {tasksJSX}</ul>

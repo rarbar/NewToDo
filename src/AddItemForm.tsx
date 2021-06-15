@@ -29,7 +29,6 @@ export function AddItemForm(props: AddItemFormPropsType) {
         setTitle('')
     }
     return (
-
         <div>
             <TextField
                 variant={'outlined'}
