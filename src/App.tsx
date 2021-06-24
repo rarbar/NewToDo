@@ -6,7 +6,6 @@ import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 
-
 export type TaskType = {
     id: string
     title: string
@@ -19,18 +18,18 @@ export type TodoListType = {
 }
 export type FilterValueType = 'all' | 'active' | 'completed'
 
-type TaskStateType = {
+export type TaskStateType = {
     [key: string]: TaskType[]
 }
 
 function App() {
 
     const todoListId1 = v1()
-    const todoListId2 = v1()
+    const todolistID2 = v1()
 
     const [todoList, setTodoList] = useState<TodoListType[]>([
         {id: todoListId1, title: 'What to leurn', filter: 'all'},
-        {id: todoListId2, title: 'What to buy', filter: 'all'},])
+        {id: todolistID2, title: 'What to buy', filter: 'all'},])
 
     const [tasks, setTasks] = useState<TaskStateType>({
         [todoListId1]: [
@@ -38,10 +37,10 @@ function App() {
             {id: v1(), title: 'JS', isDone: true},
             {id: v1(), title: 'ReactJS', isDone: false}
         ],
-        [todoListId2]: [
-            {id: v1(), title: 'Milk', isDone: true},
-            {id: v1(), title: 'Cheese', isDone: false},
-            {id: v1(), title: 'Beef', isDone: false}
+        [todolistID2]: [
+            { id: v1(), title: "bread", isDone: false },
+            { id: v1(), title: "milk", isDone: true },
+            { id: v1(), title: "tea", isDone: false }
         ]
     })
 
