@@ -32,8 +32,24 @@ export type ActionTypes =
     | changeTaskTitleAT
     | AddTodoListAT
     | RemoveTodoListAT
+export let todoListId1 = v1()
+export let todolistID2 = v1()
 
-export const tasksReducer = (state: TaskStateType, action: ActionTypes) => {
+const initialState={
+        [todoListId1]: [
+            {id: v1(), title: 'HTML&CSS', isDone: true},
+            {id: v1(), title: 'JS', isDone: true},
+            {id: v1(), title: 'ReactJS', isDone: false}
+        ],
+        [todolistID2]: [
+            { id: v1(), title: "bread", isDone: false },
+            { id: v1(), title: "milk", isDone: true },
+            { id: v1(), title: "tea", isDone: false }
+        ]
+    }
+
+
+export const tasksReducer = (state: TaskStateType=initialState, action: ActionTypes):TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK':{
             const stateCopy = {...state}
@@ -41,8 +57,9 @@ export const tasksReducer = (state: TaskStateType, action: ActionTypes) => {
             //state[action.todoListId] = todolistTask.filter(t => t.id !== action.id)
             const newTasks = todolistTask.filter(t => t.id !== action.id)
             stateCopy[action.todoListId] = newTasks
-            //у нужеого нам массива, переприсвоится на новый отфильтрованный массив
-            return stateCopy}
+            //у нужного нам массива, переприсвоится на новый отфильтрованный массив
+            return stateCopy
+        }
         case 'ADD-TASK': {
             const stateCopy = {...state}
             //присваиваем stateCopy копию с помощью спрет оператора state
@@ -58,10 +75,7 @@ export const tasksReducer = (state: TaskStateType, action: ActionTypes) => {
         case 'CHANGE-TASK-STATUS': {
             const stateCopy = {...state}
             const todolistTask = state[action.todoListId]
-            stateCopy[action.todoListId] = todolistTask.map(t => t.id === action.taskID ? {
-                ...t,
-                isDone: action.isDone
-            } : t)
+            stateCopy[action.todoListId] = todolistTask.map(t => t.id === action.taskID ? {...t, isDone: action.isDone} : t)
             return stateCopy
         }
         case 'CHANGE-TASK-TITLE': {
@@ -83,6 +97,8 @@ export const tasksReducer = (state: TaskStateType, action: ActionTypes) => {
             delete stateCopy[action.todoListID]
             return stateCopy
         }
+        default:
+            return state
     }
 }
 

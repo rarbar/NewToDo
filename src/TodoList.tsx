@@ -1,9 +1,10 @@
 import React, {ChangeEvent} from 'react';
-import {FilterValueType, TaskType} from './App';
+import { TaskType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from '@material-ui/core';
 import {Delete} from '@material-ui/icons';
+import {FilterValueType} from './AppWitheReducer';
 
 
 type PropsType = {
