@@ -1,7 +1,7 @@
 import {FilterValueType} from '../App';
 import {v1} from 'uuid';
 import {todoListId1, todolistID2} from './tasksReducer';
-import {TodoListType} from '../AppWitheReducer';
+import {TodoListType} from '../AppWitheRedux';
 
 export type RemoveTodoListAT = {
     type: 'REMOVE-TODOLIST'

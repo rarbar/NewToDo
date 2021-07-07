@@ -39,9 +39,9 @@ function App() {
             {id: v1(), title: 'ReactJS', isDone: false}
         ],
         [todolistID2]: [
-            { id: v1(), title: "bread", isDone: false },
-            { id: v1(), title: "milk", isDone: true },
-            { id: v1(), title: "tea", isDone: false }
+            {id: v1(), title: 'bread', isDone: false},
+            {id: v1(), title: 'milk', isDone: true},
+            {id: v1(), title: 'tea', isDone: false}
         ]
     })
 
@@ -53,6 +53,7 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
+
     function addNewTask(title: string, todoListID: string) {
         // создаем новую таску
         let newTask = {id: v1(), title, isDone: false}
@@ -63,6 +64,7 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
+
     function changeTaskStatus(taskID: string, isDone: boolean, todoListID: string) {
         // достаем нужный массив по todoListID
         let todolistTask = tasks[todoListID]
@@ -71,6 +73,7 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
+
     function changeTaskTitle(taskID: string, title: string, todoListID: string) {
         // достаем нужный массив по todoListID
         let todolistTask = tasks[todoListID]
@@ -83,9 +86,11 @@ function App() {
     function changeTodoListFilter(filter: FilterValueType, todolistID: string) {
         setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, filter} : tl))
     }
+
     function changeTodoListTitle(title: string, todolistID: string) {
         setTodoList(todoList.map(tl => tl.id === todolistID ? {...tl, title} : tl))
     }
+
     function removeTodoList(todoListID: string) {
         // засуним в стейт список TD, id которых не равны тому который хотим вакинуть
         setTodoList(todoList.filter(tl => tl.id !== todoListID))
@@ -94,6 +99,7 @@ function App() {
         // засетаем в стейт копию обьекта, что бы react отреагировал перерисовкой
         setTasks({...tasks})
     }
+
     function addTodoList(title: string) {
         const newTodoListID = v1()
         const newTodoList: TodoListType = {
@@ -129,7 +135,7 @@ function App() {
                             title={tl.title}
                             addTask={addNewTask}
                             todolistID={tl.id}
-                            tasks={taskForTodoList}
+                            tasks={tasks[tl.id]}
                             changeFilter={changeTodoListFilter}
                             changeStatus={changeTaskStatus}
                             removeTask={removeTask}
@@ -144,17 +150,18 @@ function App() {
     return (
         <div className="App">
             <AppBar position={'static'}>
-            <Toolbar>
-                <IconButton edge="start"  color="inherit" aria-label="menu">
-                    <Menu/>
-                </IconButton>
-                <Typography variant="h6">
-                    TodoList
-                </Typography>
-                <Button color="inherit" style={{
-                    position: 'absolute', right: '10px'}}>Login </Button>
-            </Toolbar>
-        </AppBar>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        TodoList
+                    </Typography>
+                    <Button color="inherit" style={{
+                        position: 'absolute', right: '10px'
+                    }}>Login </Button>
+                </Toolbar>
+            </AppBar>
             <Container fixed>
                 <Grid container style={{padding: '20px 0px'}}>
                     <AddItemForm addItem={addTodoList}/>
