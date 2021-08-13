@@ -63,7 +63,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.deleteTask(todolistId, taskId)
-        .then(res => {
+        .then(() => {
             dispatch(setAppStatusAC('succeeded'))
             const action = removeTaskAC(taskId, todolistId)
             dispatch(action)
@@ -110,7 +110,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         }
 
         todolistsAPI.updateTask(todolistId, taskId, apiModel)
-            .then(res => {
+            .then(() => {
                 dispatch(setAppStatusAC('succeeded'))
                 const action = updateTaskAC(taskId, domainModel, todolistId)
                 dispatch(action)
